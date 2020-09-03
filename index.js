@@ -12,6 +12,7 @@ const passport=require('passport');
 const expressLayout=require('express-ejs-layouts');
 const { log } = require('console');
 const { Socket } = require('dgram');
+const { on } = require('process');
 // const passportLocal= require('./config/passport-local-strategy');
 app.use(express.static('./assets'));
 app.set('layout extractStyles',true);
@@ -37,4 +38,7 @@ http.listen(port , function(err){
 const io= require('socket.io')(http);
 io.on('connection' , (socket)=>{
     console.log('connected.....');
+    socket.on('message',(msg)=>{
+        socket.broadcast.emit('message',msg);
+    })
 })
